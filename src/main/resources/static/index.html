@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>执行异步任务，把日志输出到前端</h1>
+<textarea rows="5" id="text" style="margin: 0px; width: 776px; height: 133px;"></textarea>
+<p><button type="button" onclick="executeJob()">执行</button></p>
+</body>
+<script>
+    var ele = document.getElementById('text')
+    var ws = new WebSocket('ws://localhost:8080/ws')
+    ws.onopen = function () {
+        ele.value = ele.value + 'WebSocket已连接！\r\n'
+    }
+    ws.onclose =  function () {
+        ele.value = ele.value + 'WebSocket已断开！\r\n'
+    }
+    ws.onmessage = function (msg) {
+        ele.value = ele.value + msg.data
+    }
+    function executeJob() {
+        ws.send('executeJob')
+    }
+</script>
+</html>
